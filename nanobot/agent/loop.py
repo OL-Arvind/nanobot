@@ -498,6 +498,15 @@ class AgentLoop:
         )
         extra_read = [BUILTIN_SKILLS_DIR] if allowed_dir else None
         self.tools.register(AskUserTool())
+        
+        # --- BASEWORKS MEMORY FIX ---
+        try:
+            from nanobot.agent.tools.instant_memory import InstantMemoryTool
+            self.tools.register(InstantMemoryTool(workspace=self.workspace))
+        except ImportError:
+            logger.warning("InstantMemoryTool not found, please ensure instant_memory.py is created in the tools directory.")
+        # ----------------------------
+
         self.tools.register(
             ReadFileTool(
                 workspace=self.workspace,
